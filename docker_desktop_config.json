@@ -1,0 +1,16 @@
+// docker (with below setting) -> private registry (not https) -> docker hub registry
+
+{
+  "debug": true,
+  "experimental": true,
+  "insecure-registries":["192.168.0.102:80", "182.92.214.141:8082"]
+}
+
+// if pulling is slow, config art to proxy ali mirror, or use below config locally directly
+{
+  "debug": true,
+  "experimental": true,
+  "registry-mirrors": [
+    "https://xxx.mirror.aliyuncs.com"
+  ]
+}
