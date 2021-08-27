@@ -1,6 +1,6 @@
-# docker
+# docker example
 
-- local
+- setup
 
         - config
         
@@ -12,26 +12,37 @@
                 ]
                 }
 
-        - test
-
-                docker pull mysql:5.7
-                docker tag mysql:5.7 182.92.214.141:8082/docker-local/mysql:5.7
-                docker login -u kyle 182.92.214.141:8082
-                docker push 182.92.214.141:8082/docker-local/mysql:5.7
-        
-                docker login -u kyle 182.92.214.141:8082
-                docker pull 182.92.214.141:8082/docker-virtual/hello-world
-                docker tag 182.92.214.141:8082/docker-virtual/hello-world:latest 182.92.214.141:8082/docker-local/hello-world:v1
-                docker push 182.92.214.141:8082/docker-local/hello-world:v1
-                docker pull 182.92.214.141:8082/docker-virtual/hello-world:v1
-                
-- docker pipeline demo
-
         - create jfrog repo
         
-                docker-dev-local
-                docker-remote
-                docker-virtual
+                app1-docker-dev-local
+                app1-docker-test-local
+                app1-docker-prod-local
+
+                public-docker-dockerhub-remote
+                public-docker-virtual (inlcude the remote)
+
+- local test
+
+                - pull from dockerhub
+                docker pull mysql:5.7
+
+                - push to my local
+                docker tag mysql:5.7 182.92.214.141:8082/app1-docker-dev-local/mysql:5.7
+                docker login -u kyle 182.92.214.141:8082
+                docker push 182.92.214.141:8082/app1-docker-dev-local/mysql:5.7
+        
+                - pull from my virtual (dockerhub inside)
+                docker login -u kyle 182.92.214.141:8082
+                docker pull 182.92.214.141:8082/public-docker-virtual/hello-world
+
+                - push to my local
+                docker tag 182.92.214.141:8082/public-docker-virtual/hello-world:latest 182.92.214.141:8082/app1-docker-dev-local/hello-world:v1
+                docker push 182.92.214.141:8082/app1-docker-dev-local/hello-world:v1
+
+                - pull from my local
+                docker pull 182.92.214.141:8082/app1-docker-dev-local/hello-world:v1
+                
+- jenkins demo
 
         - install & configure nginx
         
@@ -63,4 +74,7 @@
                 docker.groovy
                 use https://github.com/jfrog/project-examples as git project
 
+- promote demo
+
+        check ./promote
 

@@ -2,7 +2,8 @@ node {
     def server = Artifactory.server 'art1'
     def rtDocker = Artifactory.docker server: server
     def buildInfo = Artifactory.newBuildInfo()
-    def ARTIFACTORY_DOCKER_REGISTRY='182.92.214.141:8082/docker-dev-local' // x.x.x.x:80
+    def ARTIFACTORY_DOCKER_REGISTRY='182.92.214.141:8082/app1-docker-dev-local' // x.x.x.x:80
+    def imagePath = ARTIFACTORY_DOCKER_REGISTRY + '/hello-world:latest'
 
     stage ('Clone') {
         git url: 'https://github.com/JFrog/project-examples.git'
@@ -10,7 +11,7 @@ node {
 
     stage ('Add properties') {
         // Attach custom properties to the published artifacts:
-        rtDocker.addProperty("project-name", "docker1").addProperty("status", "stable")
+        rtDocker.addProperty("project-name", "docker-example").addProperty("status", "stable")
     }
 
     stage ('Docker login') {
@@ -20,15 +21,15 @@ node {
     }
 
     stage ('Build docker image') {
-        docker.build(ARTIFACTORY_DOCKER_REGISTRY + '/hello-world:latest', 'jenkins-examples/pipeline-examples/resources')
+        docker.build(imagePath, 'jenkins-examples/pipeline-examples/resources')
     }
 
     stage ('Push image to Artifactory') {
-        buildInfo = rtDocker.push ARTIFACTORY_DOCKER_REGISTRY + '/hello-world:latest', 'docker-dev-local'
+        buildInfo = rtDocker.push imagePath, 'app1-docker-dev-local'
     }
 
     stage ('Pull image from Artifactory') {
-        sh 'docker pull 182.92.214.141:8082/docker-virtual/hello-world'
+        sh 'docker pull ' + imagePath
     }
 
     stage ('Publish build info') {
