@@ -3,7 +3,7 @@
 
 
 
-curl -X POST 'http://182.92.214.141:8081/artifactory/api/search/aql' \
+curl -X POST 'https://soleng.jfrog.io/artifactory/api/search/aql' \
 -H 'X-JFrog-Art-Api: '"$ART_API_KEY"'' \
 -H 'Content-Type: text/plain' \
 --data-raw 'items.find(
