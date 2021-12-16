@@ -2,7 +2,7 @@ node {
     def server = Artifactory.server 'art1'
     def rtDocker = Artifactory.docker server: server
     def buildInfo = Artifactory.newBuildInfo()
-    def ARTIFACTORY_DOCKER_REGISTRY='https://soleng.jfrog.io/app1-docker-dev-local' // x.x.x.x:80
+    def ARTIFACTORY_DOCKER_REGISTRY='soleng.jfrog.io/app1-docker-dev-local' // x.x.x.x:80
     def imagePath = ARTIFACTORY_DOCKER_REGISTRY + '/hello-world:latest'
 
     stage ('Clone') {
@@ -16,7 +16,7 @@ node {
 
     stage ('Docker login') {
         withCredentials([usernamePassword(credentialsId: 'art_username_password', passwordVariable: 'ART_PASSWORD', usernameVariable: 'ART_USERNAME')]) {
-            sh 'docker login -u ${ART_USERNAME} -p ${ART_PASSWORD} https://soleng.jfrog.io'
+            sh 'docker login -u ${ART_USERNAME} -p ${ART_PASSWORD} soleng.jfrog.io'
         }
     }
 
