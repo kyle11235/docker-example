@@ -8,39 +8,39 @@
 
                 {
                 "insecure-registries": [
-                "182.92.214.141:8082"
+                "soleng.jfrog.io"
                 ]
                 }
 
         - create jfrog repo
         
-                app1-docker-dev-local
-                app1-docker-test-local
-                app1-docker-prod-local
-
-                public-docker-dockerhub-remote
-                public-docker-virtual (inlcude the remote)
+                app1-docker-dev-local (uncheck  'Block pushing of image manifest v2 schema 1')
+                app1-docker-test-local (uncheck  'Block pushing of image manifest v2 schema 1')
+                app1-docker-prod-local (uncheck  'Block pushing of image manifest v2 schema 1')
+                
+                app1-docker-dockerhub-remote
+                app1-docker-virtual (inlcude the remote)
 
 - local test
 
                 - pull from dockerhub
-                docker pull mysql:5.7
+                docker pull hello-world
 
                 - push to my local
-                docker tag mysql:5.7 182.92.214.141:8082/app1-docker-dev-local/mysql:5.7
-                docker login -u kyle 182.92.214.141:8082
-                docker push 182.92.214.141:8082/app1-docker-dev-local/mysql:5.7
+                docker tag hello-world soleng.jfrog.io/app1-docker-dev-local/hello-world:5.7
+                docker login -u kyle soleng.jfrog.io
+                docker push soleng.jfrog.io/app1-docker-dev-local/hello-world:5.7
         
                 - pull from my virtual (dockerhub inside)
-                docker login -u kyle 182.92.214.141:8082
-                docker pull 182.92.214.141:8082/public-docker-virtual/hello-world
+                docker login -u kyle soleng.jfrog.io
+                docker pull soleng.jfrog.io/app1-docker-virtual/hello-world
 
                 - push to my local
-                docker tag 182.92.214.141:8082/public-docker-virtual/hello-world:latest 182.92.214.141:8082/app1-docker-dev-local/hello-world:v1
-                docker push 182.92.214.141:8082/app1-docker-dev-local/hello-world:v1
+                docker tag soleng.jfrog.io/app1-docker-virtual/hello-world:latest soleng.jfrog.io/app1-docker-dev-local/hello-world:v1
+                docker push soleng.jfrog.io/app1-docker-dev-local/hello-world:v1
 
                 - pull from my local
-                docker pull 182.92.214.141:8082/app1-docker-dev-local/hello-world:v1
+                docker pull soleng.jfrog.io/app1-docker-dev-local/hello-world:v1
                 
 - jenkins demo
 
@@ -72,7 +72,7 @@
         - test
         
                 docker.groovy
-                use https://github.com/jfrog/project-examples as git project
+                use https://github.com/kyle11235/docker-example as git project
 
 - promote demo
 

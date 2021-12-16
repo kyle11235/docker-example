@@ -2,11 +2,11 @@ node {
     def server = Artifactory.server 'art1'
     def rtDocker = Artifactory.docker server: server
     def buildInfo = Artifactory.newBuildInfo()
-    def ARTIFACTORY_DOCKER_REGISTRY='182.92.214.141:8082/app1-docker-dev-local' // x.x.x.x:80
+    def ARTIFACTORY_DOCKER_REGISTRY='https://soleng.jfrog.io/app1-docker-dev-local' // x.x.x.x:80
     def imagePath = ARTIFACTORY_DOCKER_REGISTRY + '/hello-world:latest'
 
     stage ('Clone') {
-        git url: 'https://github.com/JFrog/project-examples.git'
+        git url: 'https://github.com.cnpmjs.org/kyle11235/docker-example.git'
     }
 
     stage ('Add properties') {
@@ -16,12 +16,12 @@ node {
 
     stage ('Docker login') {
         withCredentials([usernamePassword(credentialsId: 'art_username_password', passwordVariable: 'ART_PASSWORD', usernameVariable: 'ART_USERNAME')]) {
-            sh 'docker login -u ${ART_USERNAME} -p ${ART_PASSWORD} 182.92.214.141:8082'
+            sh 'docker login -u ${ART_USERNAME} -p ${ART_PASSWORD} https://soleng.jfrog.io'
         }
     }
 
     stage ('Build docker image') {
-        docker.build(imagePath, 'jenkins-examples/pipeline-examples/resources')
+        docker.build(imagePath, '.')
     }
 
     stage ('Push image to Artifactory') {

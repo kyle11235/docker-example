@@ -2,6 +2,6 @@
 
 
 # login first
-# docker login -u kyle 182.92.214.141:8082
+# docker login -u kyle soleng.jfrog.io
 
-docker pull 182.92.214.141:8082/public-docker-virtual/hello-world:latest
+docker pull soleng.jfrog.io/app1-docker-virtual/hello-world:latest
